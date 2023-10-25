@@ -1,0 +1,29 @@
+- 로컬 저장소 생성하기
+$git init
+
+- 로컬 저장소와 원격 저장소 연결하기
+$git remote add origin (원격저장소 주소)
+
+- 연결된 원격 저장소 확인
+$git remote -v
+
+- 기존 원격 저장소와의 연결 해제
+$git remote rm origin
+
+- 파일 업로드 (add > commit > push)
+-- 현재 버전 상태 확인
+$git status
+-- 모든 변경사항을 올릴 경우
+$git add .
+-- 특정한 파일만 올릴 경우
+$git add (파일 및 디렉토리)
+-- add한 파일 모두 취소
+$git rm --cached -r .
+-- 특정 파일만 add 취소
+$git rm --cached (파일)
+
+-- commit 하기
+$git commit -m "커밋 메세지"
+
+-- push 하기
+$git push origin main
