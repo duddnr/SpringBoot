@@ -1,0 +1,6 @@
+package com.security.entity;
+
+public class Member 
+{
+	
+}
