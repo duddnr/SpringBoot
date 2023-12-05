@@ -1,0 +1,109 @@
+package com.example.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.example.dto.soccerteamDto;
+import com.example.entity.soccerteams;
+import com.example.entity.soccerteams_Comment;
+import com.example.repository.soccerteamsCommentRepository;
+import com.example.repository.soccerteamsRepository;
+
+import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Service
+public class soccerteamsService 
+{
+	@Autowired
+	private soccerteamsRepository soccerteamsrepository;
+	@Autowired
+	private soccerteamsCommentService soccerteamscommentservice;
+	
+	public String index(Model model, Pageable pageable)
+	{	
+		Page<soccerteams> soccerteamsList = soccerteamsrepository.findAll(pageable);
+		
+		//List<soccerteams> soccerteamsEntityList = soccerteamsrepository.findAll();
+		model.addAttribute("soccerteamsList", soccerteamsList);
+		model.addAttribute("prev", pageable.previousOrFirst().getPageNumber());
+		model.addAttribute("next", pageable.next().getPageNumber());
+		model.addAttribute("hasPrev", soccerteamsList.hasPrevious());
+		model.addAttribute("hasNext", soccerteamsList.hasNext());
+		return "/soccerteam/index";
+	}
+	
+	public void comment()
+	{
+		List<soccerteams> list = soccerteamsrepository.findAll();
+		
+		for(Long i = 0L; i < list.size(); i++)
+		{
+			List<soccerteams_Comment> commentList = soccerteamscommentservice.comments(i);
+			list.set(5, Long.valueOf(commentList.size()));
+		}
+	}
+	
+	public String show(Long id, Model model)
+	{
+		soccerteams soccerteamEntity = soccerteamsrepository.findById(id).orElse(null);
+		List<soccerteams_Comment> commentList = soccerteamscommentservice.comments(id);
+		model.addAttribute("soccerteams", soccerteamEntity);
+		model.addAttribute("soccerteamsComment", commentList);
+		return "/soccerteam/show";
+	}
+	
+	@Transactional
+	public String read(Long id)
+	{
+		soccerteamsrepository.updateView(id);
+		return "redirect:/soccerteam/" + id;
+	}
+	
+	public String create(soccerteamDto dto)
+	{
+		soccerteams soccerEntity = dto.toEntity();	
+		soccerteamsrepository.save(soccerEntity);
+		return "redirect:/soccerteams";
+	}
+	
+	public String edit(Long id, Model model)
+	{
+		soccerteams soccerteamEntity = soccerteamsrepository.findById(id).orElse(null);
+		model.addAttribute("soccerteams", soccerteamEntity);
+		return "/soccerteam/edit";
+	}
+	
+	@Transactional
+	public String update(soccerteamDto dto)
+	{
+		soccerteams target = dto.toEntity();
+		soccerteams soccerteamEntity = soccerteamsrepository.findById(target.getId()).orElse(null);
+		soccerteamEntity.patch(target);
+		soccerteamsrepository.save(soccerteamEntity);
+		return "redirect:/soccerteam/" + soccerteamEntity.getId();
+	}
+	
+	@Transactional
+	public String delete(Long id, RedirectAttributes rttr)
+	{
+		soccerteams target = soccerteamsrepository.findById(id).orElse(null);
+		if(target != null)
+		{
+			rttr.addFlashAttribute("msg", "삭제됐습니다.");
+			soccerteamsrepository.delete(target);
+		}
+		return "redirect:/soccerteams";
+	}
+	
+}

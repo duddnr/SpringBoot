@@ -1,0 +1,50 @@
+{{>layouts/header}}
+
+	<div class="card mb-4">
+			<div class="card-header" align="right">
+				<a class="btn btn-primary float-end" href="/soccerteam/new">
+					<i class="fas fa-edit"></i> 글 작성
+				</a>
+			</div>
+	
+			<div class="card-body">
+				<table class="table table-hover table-striped">
+					<thead>
+						<tr>
+						<th scope="col">글번호</th>
+						<th scope="col">제목</th>
+						<th scope="col">작성자</th>
+						<th scope="col">조회수</th>
+						<th scope="col">작성일</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- 게시글 목록 출력 -->
+						{{#soccerteamsList}}
+							<tr>
+								<td>{{id}}</td>
+								<td><a href="/soccerteam/read/{{id}}">{{title}}</a>
+								{{#comment_}}
+									<a> [{{comment_}}] </a>
+								{{/comment_}}
+								</td>
+								<td>{{writer}}</td>
+								<td>{{views}}</td>
+								<td>{{created}}</td>
+							</tr>
+						{{/soccerteamsList}}
+					</tbody>
+				</table>
+			</div>
+	</div>
+
+    <ul class="pagination justify-content-center">
+        {{#hasPrev}}
+             <a class="page-link" href="?page={{prev}}">이전</a>
+        {{/hasPrev}}
+        {{#hasNext}}
+             <a class="page-link" href="?page={{next}}">다음</a>
+        {{/hasNext}}
+    </ul>
+
+{{>layouts/footer}}
