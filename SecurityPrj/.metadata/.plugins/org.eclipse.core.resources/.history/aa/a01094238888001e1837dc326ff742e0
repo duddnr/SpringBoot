@@ -1,0 +1,6 @@
+package com.security.constant;
+
+public enum Gender 
+{
+	MAN, GIRL
+}

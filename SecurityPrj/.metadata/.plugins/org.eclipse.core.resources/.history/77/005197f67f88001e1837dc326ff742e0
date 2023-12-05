@@ -1,0 +1,21 @@
+package com.security.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.security.dto.MemberDto;
+import com.security.entity.Member;
+import com.security.repository.MemberRepository;
+
+@Service
+public class MemberService 
+{
+	@Autowired
+	MemberRepository memberRepository;
+	
+	public void created(MemberDto memberDto)
+	{
+		Member member = Member.createdMember(memberDto);
+	}
+	
+}

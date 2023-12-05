@@ -1,0 +1,32 @@
+package com.security.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.security.dto.MemberDto;
+import com.security.entity.Member;
+import com.security.repository.MemberRepository;
+
+@Service
+public class MemberService 
+{
+	@Autowired
+	MemberRepository memberRepository;
+	
+	public void created(MemberDto memberDto)
+	{
+		uniqueTest(memberDto); // 중복 검사 (중복 발견 시 에러 발생)
+		Member member = Member.createdMember(memberDto);
+		
+		memberRepository.save(member);
+	}
+	
+	public void uniqueTest(MemberDto memberDto) throws IllegalStateException
+	{
+		Member member = memberRepository.findByuserIdOremailOrphoneNumber(memberDto.getUserId(), memberDto.getEmail(), memberDto.getPhoneNumber());
+		
+		if(member.getUserId().equals(memberDto.getUserId())) { throw new IllegalStateException("이미 가입된 아이디 입니다.");  }
+		else if(member.getEmail().equals(memberDto.getEmail())) { throw new IllegalStateException("이미 가입된 이메일 입니다."); }
+		else if(member.getPhoneNumber().equals(memberDto.getPhoneNumber())) { throw new IllegalStateException("이미 가입된 핸드폰 번호 입니다."); }
+	}
+}
