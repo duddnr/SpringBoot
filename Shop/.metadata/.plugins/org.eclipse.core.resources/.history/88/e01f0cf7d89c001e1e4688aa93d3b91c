@@ -1,0 +1,30 @@
+package com.shop.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.shop.repository.CartItemRepository;
+import com.shop.repository.CartRepository;
+import com.shop.repository.ItemRepository;
+import com.shop.repository.MemberRepository;
+
+import lombok.RequiredArgsConstructor;
+
+@Transactional
+@RequiredArgsConstructor
+@Service
+public class CartService 
+{
+	@Autowired
+	private ItemRepository itemRepository;
+	
+	@Autowired
+	private MemberRepository memberRepository;
+	
+	@Autowired
+	private CartRepository cartRepository;
+	
+	@Autowired
+	private CartItemRepository cartItemRepository;
+}

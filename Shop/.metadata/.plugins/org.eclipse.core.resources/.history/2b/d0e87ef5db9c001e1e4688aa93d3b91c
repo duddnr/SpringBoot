@@ -1,0 +1,22 @@
+package com.shop.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.shop.repository.ItemRepository;
+import com.shop.repository.MemberRepository;
+
+@Transactional
+@SpringBootTest
+public class CartServiceTest 
+{
+	@Autowired
+	private ItemRepository itemRepository;
+	
+	@Autowired
+	private MemberRepository memberRepository;
+	
+	@Autowired
+	private CartService cartService;
+}

@@ -1,0 +1,23 @@
+package com.shop.dto;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.shop.constant.OrderStatus;
+import com.shop.entity.Order;
+
+import lombok.Data;
+
+@Data
+public class OrderHistDto 
+{
+	public OrderHistDto(Order order)
+	{
+		
+	}
+	
+	private Long orderId; // 주문 아이디
+	private String orderDate; // 주문날짜
+	private OrderStatus orderStatus; // 주문상태
+	private List<OrderItemDto> orderItemDtoList = new ArrayList<>();
+}

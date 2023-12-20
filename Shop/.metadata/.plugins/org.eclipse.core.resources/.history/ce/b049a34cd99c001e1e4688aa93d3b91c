@@ -1,0 +1,62 @@
+package com.shop.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.shop.dto.CartItemDto;
+import com.shop.entity.Cart;
+import com.shop.entity.CartItem;
+import com.shop.entity.Item;
+import com.shop.entity.Member;
+import com.shop.repository.CartItemRepository;
+import com.shop.repository.CartRepository;
+import com.shop.repository.ItemRepository;
+import com.shop.repository.MemberRepository;
+
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+
+@Transactional
+@RequiredArgsConstructor
+@Service
+public class CartService 
+{
+	@Autowired
+	private ItemRepository itemRepository;
+	
+	@Autowired
+	private MemberRepository memberRepository;
+	
+	@Autowired
+	private CartRepository cartRepository;
+	
+	@Autowired
+	private CartItemRepository cartItemRepository;
+	
+	public Long addCart(CartItemDto cartItemDto, String email)
+	{
+		Item item = itemRepository.findById(cartItemDto.getItemId()).orElseThrow(EntityNotFoundException::new);
+		Member member = memberRepository.findByemail(email);
+		
+		Cart cart = cartRepository.findByMemberId(member.getId());
+		if(cart == null)
+		{
+			cart = Cart.createCart(member);
+			cartRepository.save(cart);
+		}
+		
+		CartItem savedCartItem = cartItemRepository.findByCartIdAndItemId(cart.getId(), item.getId());
+		if(savedCartItem != null)
+		{
+			savedCartItem.addCount(cartItemDto.getCount());
+			return savedCartItem.getId();
+		}
+		else
+		{
+			CartItem cartItem = CartItem.createCartItem(cart, item, cartItemDto.getCount());
+			cartItemRepository.save(cartItem);
+			return cartItem.getId();
+		}
+	}
+}

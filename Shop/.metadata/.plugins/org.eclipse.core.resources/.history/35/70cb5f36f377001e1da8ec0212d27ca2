@@ -1,0 +1,7 @@
+spring.datasource.url=jdbc:oracle:thin:@localhost:1521/xepdb1
+spring.datasource.username=HOME
+spring.datasource.password=1234
+spring.datasource.driver-class-name=oracle.jdbc.driver.OracleDriver
+
+# H2
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect

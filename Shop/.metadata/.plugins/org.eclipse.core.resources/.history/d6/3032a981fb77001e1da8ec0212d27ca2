@@ -1,0 +1,16 @@
+# 콘솔창에 출력되는 쿼리를 가독성 좋게 포멧
+spring.jpa.properties.hibernate.format_sql=true
+# 실행되는 쿼리 콘솔 출력
+spring.jpa.properties.hibernate.show_sql=true
+# 쿼리에 물음표로 출력되는 바인드 파라미터 출력
+logging.level.org.hibernate.type.descriptor.sql=trace
+
+# 한글 출력
+server.servlet.encoding.force=true
+
+spring.datasource.url=jdbc:oracle:thin:@localhost:1521/xepdb1
+spring.datasource.username=HOME
+spring.datasource.password=1234
+spring.datasource.driver-class-name=oracle.jdbc.driver.OracleDriver
+
+spring.jpa.database-platform=org.hibernate.dialect.Oracle12cDialect
